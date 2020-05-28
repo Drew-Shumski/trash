@@ -24,7 +24,6 @@ warden env-init siteName magento2 (siteName will be used to generate domain "htt
 ```
 3. Verify the `.env` file has an appropriate URL (TRAEFIK_DOMAIN), PHP version, etc. Make updates to the default configurations as needed.
 4. Ensure the project's `app/etc/env.php` file is not a symlink from outside of the `magentoRoot` directory. 
-```
 5. Update the db connection configurations within `app/etc/env.php` using `magento` as the value for `dbname`, `username` and `password`. Update the `host` to match the Docker container name for the project database, for example: `siteName_db_1`.
 6. Update the env.php with any other necessary changes. (ex. Redis, Elastic) Please see the [Warden env.php.init](https://github.com/davidalger/warden-env-magento2/blob/develop/webroot/app/etc/env.php.init.php) sample for recommendations and requirements of certain configurations.
 7. Create the project's Docker container (or rebuild after updating .env configuration):
