@@ -10,7 +10,7 @@ brew install davidalger/warden/warden
 3. Make sure Docker Desktop is running
 4. Create the Warden Docker container:
 ```
-warden up
+warden svc up
 ```
 
 ## Project Setup
@@ -50,7 +50,7 @@ cd ~/.../magentoRoot/
 ```
 2. Esnure the Warden Docker container is running:
 ```
-warden start
+warden svc start
 ```
 3. Start the project's Docker container:
 ```
