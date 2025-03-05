@@ -2,30 +2,33 @@
 This is a basic outline walkthrough for the setup and management of Docker-based Magento 2 local environments using the Warden CLI utility. For more detailed information, please see the [documentation](https://docs.warden.dev) or the [Github repository](https://github.com/davidalger/warden).
 
 ## Warden Setup
-1. Install [Docker Desktop for Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
+0. Before everything, make sure you have [Brew](https://brew.sh/) installed
+1. Install [Orbstack (Preferred)](https://orbstack.dev/) or [Docker](https://www.docker.com/get-started/)
 2. Install the Warden Homebrew package:
 ```
-brew install davidalger/warden/warden
+brew install wardenenv/warden/warden
 ```
-3. Make sure Docker Desktop is running
-4. Create the Warden Docker container:
+3. Make sure Orbstack (Docker) Desktop is running
+4. Create Warden container:
 ```
 warden svc up
 ```
+Congrats, Warden should now be up and running!
 
 ## Project Setup
-1. Navigate to Magento root directory:
+1. Navigate to your Magento project root directory:
 ```
 cd ~/.../magentoRoot/
 ```
 2. Generate .env file for the project:
 ```
-warden env-init siteName magento2 (siteName will be used to generate domain "https://siteName.test")
+warden env-init siteName magento2 (siteName will be used as a default domain name "https://siteName.test")
 ```
-3. Verify the `.env` file has an appropriate URL (TRAEFIK_DOMAIN), PHP version, etc. Make updates to the default configurations as needed.
-4. Ensure the project's `app/etc/env.php` file is not a symlink from outside of the `magentoRoot` directory. 
-5. Update the db connection configurations within `app/etc/env.php` using `magento` as the value for `dbname`, `username` and `password`. Update the `host` to match the Docker container name for the project database, for example: `siteName_db_1`.
-6. Update the env.php with any other necessary changes. (ex. Redis, Elastic) Please see the [Warden env.php.init](https://github.com/davidalger/warden-env-magento2/blob/develop/webroot/app/etc/env.php.init.php) sample for recommendations and requirements of certain configurations.
+Now you should have the .env file in your project's root directory
+3. Verify the `.env` file has an appropriate URL (TRAEFIK_DOMAIN), PHP version, etc. Update configurations based on your needs (ex. PHP 8.2, enable opensearch, disable elastic etc.).
+4. Ensure you have `app/etc/env.php` file. 
+5. Update db connection configurations within `app/etc/env.php` using `magento` as a `dbname`, `username` and `password`. Update the `host` to match the Docker container name for the project database, for example: `siteName_db_1` or it can just be `db`.
+6. Update the `app/etc/env.php`  with any other necessary changes (ex. Redis, Elastic). Use this as an example [Warden env.php.init](https://github.com/davidalger/warden-env-magento2/blob/develop/webroot/app/etc/env.php.init.php).
 7. Create the project's Docker container (or rebuild after updating .env configuration):
 ```
 warden env up -d
@@ -38,21 +41,24 @@ warden sign-certificate siteName.test
 ```
 warden db import < ~/path_to_database_dump.sql
 ```
-or
+or if you have pv installed
 ```
 pv ~/path_to_database_dump.sql.gz | gunzip -c | warden db import
 ```
 
+Congrats, your project is up and running! Now you can skip to option 4 of Project Startup section (warden shell)
+
 ## Project Startup
+I you have already build your env previously and you just want to start it just do this:
 1. Navigate to Magento root directory:
 ```
 cd ~/.../magentoRoot/
 ```
-2. Esnure the Warden Docker container is running:
+2. Ensure the Warden Docker container is running (should be autostarted when docker starting):
 ```
 warden svc start
 ```
-3. Start the project's Docker container:
+3. Start the project's containers:
 ```
 warden env start
 ```
